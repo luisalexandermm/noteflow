@@ -90,7 +90,7 @@ if (require.main === module) {
     }
     console.log("  Base de datos: Neon (PostgreSQL)");
     console.log(correoConfigurado()
-      ? "  Correo: SMTP configurado (los códigos llegan por correo)\n"
-      : "  Correo: sin SMTP → los códigos se muestran AQUÍ en la consola (solo para desarrollo)\n");
+      ? "  Correo: servicio configurado (los códigos llegan por correo)\n"
+      : "  Correo: sin servicio → los códigos se muestran AQUÍ en la consola (solo para desarrollo)\n");
   });
 }

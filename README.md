@@ -74,6 +74,21 @@ Abre **http://localhost:3000**. En este modo entras con cualquier correo y los d
 
 ### 3. Configurar el correo (para que llegue el código)
 
+En un hosting como Render, se recomienda usar la API HTTPS de [Resend](https://resend.com/), porque algunos hostings bloquean conexiones SMTP salientes:
+
+1. Crea una cuenta en Resend y genera una API key en **API Keys**.
+2. Para una prueba, puedes usar `onboarding@resend.dev` como remitente; Resend solo permite enviar con ese remitente a la dirección asociada a tu cuenta.
+3. Para que cualquier persona pueda registrarse, verifica un dominio propio en Resend y configura su DNS. Usa como remitente una dirección de ese dominio, por ejemplo `NoteFlow <acceso@tu-dominio.com>`.
+4. En Render → servicio → **Environment**, configura:
+   ```
+   RESEND_API_KEY=re_...
+   CORREO_REMITENTE=NoteFlow <acceso@tu-dominio.com>
+   NODE_ENV=production
+   ```
+   Guarda los cambios para que Render reinicie el servicio. No publiques la API key.
+
+La API de Resend tiene prioridad si se configura `RESEND_API_KEY`. SMTP con Gmail se puede usar para desarrollo local:
+
 Con Gmail:
 1. En tu cuenta de Google activa la **Verificación en 2 pasos** (Seguridad).
 2. Entra a [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords), crea una contraseña de aplicación llamada `NoteFlow` y copia las 16 letras.
@@ -85,14 +100,14 @@ Con Gmail:
    SMTP_CLAVE=abcdefghijklmnop
    ```
 
-> **Sin SMTP:** mientras desarrollas, el código aparece en la terminal donde corre `npm start` (`✉ [MODO DESARROLLO] Código para…`). Así puedes probar sin configurar correo.
+> **Sin servicio de correo:** mientras desarrollas, el código aparece en la terminal donde corre `npm start` (`✉ [MODO DESARROLLO] Código para…`). Así puedes probar sin configurar correo.
 
 ### 4. Reiniciar y comprobar
 
 `Ctrl + C` y `npm start`. Debe decir:
 ```
 Base de datos: Neon (PostgreSQL)
-Correo: SMTP configurado (los códigos llegan por correo)
+Correo: servicio configurado (los códigos llegan por correo)
 ```
 
 Para comprobar que todo funciona:

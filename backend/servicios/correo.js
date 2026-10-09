@@ -1,21 +1,27 @@
 // ═══════════════════════════════════════════════════════════
 // NoteFlow · servicios/correo.js
-// Envía el código de acceso por correo (SMTP con nodemailer).
+// Envía el código de acceso por Resend (HTTPS) o SMTP.
 //
-// Variables del .env (ejemplo con Gmail):
+// Para producción, Resend evita las restricciones de salida SMTP de algunos hostings:
+//   RESEND_API_KEY=re_...
+//   CORREO_REMITENTE=NoteFlow <acceso@tu-dominio-verificado.com>
+//
+// Para desarrollo local también se puede usar SMTP:
 //   SMTP_HOST=smtp.gmail.com
 //   SMTP_PUERTO=465
 //   SMTP_USUARIO=tucorreo@gmail.com
 //   SMTP_CLAVE=la "contraseña de aplicación" de 16 letras
 //
-// Sin SMTP configurado y en desarrollo, el código se muestra en la
+// Sin correo configurado y en desarrollo, el código se muestra en la
 // consola del servidor (así puedes probar sin enviar correos).
 // ═══════════════════════════════════════════════════════════
 
 const nodemailer = require("nodemailer");
 
 function correoConfigurado() {
-  return Boolean(process.env.SMTP_HOST && process.env.SMTP_USUARIO && process.env.SMTP_CLAVE);
+  return Boolean(process.env.RESEND_API_KEY || (
+    process.env.SMTP_HOST && process.env.SMTP_USUARIO && process.env.SMTP_CLAVE
+  ));
 }
 
 let transporte = null;
@@ -32,18 +38,8 @@ function obtenerTransporte() {
   return transporte;
 }
 
-async function enviarCodigoPorCorreo(destino, codigo) {
-  if (!correoConfigurado()) {
-    if (process.env.NODE_ENV === "production") {
-      throw new Error("El envío de correos no está configurado (SMTP_HOST, SMTP_USUARIO, SMTP_CLAVE)");
-    }
-    console.log(`\n  ✉  [MODO DESARROLLO] Código para ${destino}: ${codigo}\n`);
-    return;
-  }
-
-  await obtenerTransporte().sendMail({
-    from: `"NoteFlow" <${process.env.CORREO_REMITENTE || process.env.SMTP_USUARIO}>`,
-    to: destino,
+function contenidoCorreo(codigo) {
+  return {
     subject: `${codigo} es tu código de NoteFlow`,
     text: `Tu código para entrar a NoteFlow es: ${codigo}\n\nVence en 10 minutos. Si no lo pediste, ignora este correo.`,
     html: `
@@ -53,6 +49,45 @@ async function enviarCodigoPorCorreo(destino, codigo) {
         <p style="font-size:32px;font-weight:bold;letter-spacing:8px;margin:20px 0;color:#4a4ee0">${codigo}</p>
         <p style="color:#979cab;font-size:13px">Vence en 10 minutos. Si no lo pediste, ignora este correo.</p>
       </div>`
+  };
+}
+
+async function enviarConResend(destino, codigo) {
+  const remitente = process.env.CORREO_REMITENTE || "NoteFlow <onboarding@resend.dev>";
+  const respuesta = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ from: remitente, to: destino, ...contenidoCorreo(codigo) }),
+    signal: AbortSignal.timeout(15000)
+  });
+
+  if (!respuesta.ok) {
+    const detalle = await respuesta.json().catch(() => ({}));
+    throw new Error(`Resend rechazó el correo (${respuesta.status}): ${detalle.message || detalle.name || "error del proveedor"}`);
+  }
+}
+
+async function enviarCodigoPorCorreo(destino, codigo) {
+  if (!correoConfigurado()) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("El envío de correos no está configurado (RESEND_API_KEY o SMTP_HOST, SMTP_USUARIO, SMTP_CLAVE)");
+    }
+    console.log(`\n  ✉  [MODO DESARROLLO] Código para ${destino}: ${codigo}\n`);
+    return;
+  }
+
+  if (process.env.RESEND_API_KEY) {
+    await enviarConResend(destino, codigo);
+    return;
+  }
+
+  await obtenerTransporte().sendMail({
+    from: `"NoteFlow" <${process.env.CORREO_REMITENTE || process.env.SMTP_USUARIO}>`,
+    to: destino,
+    ...contenidoCorreo(codigo)
   });
 }
 

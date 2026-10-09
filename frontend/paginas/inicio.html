@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="NoteFlow — Tus ideas, mejor organizadas. Notas, materias, tareas y calendario para estudiantes.">
+  <meta name="theme-color" content="#eef1f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NoteFlow">
+  <title>Inicio · NoteFlow</title>
+  <link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="../img/iconos/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../img/iconos/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <link rel="stylesheet" href="../css/componentes.css">
+  <link rel="stylesheet" href="../css/paginas.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <script src="../js/aviso-archivo.js"></script>
+  <script src="../vendor/gsap/gsap.min.js" defer></script>
+</head>
+
+<body data-pagina="inicio" class="pagina-inicio">
+  <div class="app">
+    <!-- Menú lateral, barra superior y navegación de celular: los dibuja js/navegacion.js -->
+    <aside class="barra-lateral" id="barra-lateral" aria-label="Menú principal"></aside>
+
+    <div class="principal">
+      <header class="barra-superior" id="barra-superior"></header>
+      <header class="cabecera-movil" id="cabecera-movil"></header>
+
+      <main class="contenido" id="contenido">
+        <div class="tablero">
+          <!-- ═══ Columna principal ═══ -->
+          <div class="tablero-principal">
+
+            <!-- Bienvenida con la escena 3D (en el celular se oculta: el saludo va arriba) -->
+            <section class="banner-inicio" data-animar aria-labelledby="saludo">
+              <div class="banner-texto">
+                <p class="ceja-fecha" id="fecha-larga"></p>
+                <h1 id="saludo">Hola</h1>
+                <p class="resumen-dia" id="resumen-dia"></p>
+                <div class="banner-acciones">
+                  <a class="boton boton-primario" href="nota.html?nueva=1"><span data-icono="mas"></span>Nueva nota</a>
+                  <a class="boton boton-vidrio" href="calendario.html"><span data-icono="calendario"></span>Ver agenda</a>
+                </div>
+              </div>
+              <!-- Three.js dibuja aquí (3d/escena.js). El SVG se ve mientras carga o si no hay 3D. -->
+              <div class="escena-3d" id="escena-3d" aria-hidden="true">
+                <img class="cubo-respaldo" src="../img/cubo.svg" alt="">
+                <p class="frase-mano">Pequeños pasos,<br>grandes resultados.</p>
+              </div>
+            </section>
+
+            <!-- Aviso para instalar la app (solo celular y si se puede instalar) -->
+            <div class="aviso-instalar" id="aviso-instalar" hidden>
+              <span class="icono-color grande materia-violeta"><span data-icono="instalar"></span></span>
+              <div><strong>Instala NoteFlow</strong><small>Ábrela desde tu pantalla de inicio, como una app.</small></div>
+              <button class="boton" type="button" data-instalar>Instalar</button>
+              <button class="boton-icono chico" type="button" id="cerrar-aviso-instalar" aria-label="No mostrar más"><span data-icono="cerrar"></span></button>
+            </div>
+
+            <!-- Buscador grande (solo celular) -->
+            <button class="buscador-inicio" type="button" data-abrir-buscador aria-label="Buscar notas, tareas y materias">
+              <span data-icono="buscar"></span><span>Buscar notas, tareas…</span>
+              <span class="boton-filtro"><span data-icono="ajustes"></span></span>
+            </button>
+
+            <!-- Resumen: 4 mosaicos de colores -->
+            <section class="seccion-inicio seccion-resumen" aria-labelledby="titulo-resumen">
+              <div class="cabecera-seccion" data-animar>
+                <h2 class="titulo-seccion" id="titulo-resumen">Resumen</h2>
+                <span class="pastilla-suave">Esta semana</span>
+              </div>
+              <div class="mosaicos" id="mosaicos"></div>
+            </section>
+
+            <!-- Primeros pasos: solo mientras la cuenta está vacía -->
+            <section class="primeros-pasos tarjeta" id="primeros-pasos" hidden aria-labelledby="titulo-pasos"></section>
+
+            <!-- Materias con su progreso -->
+            <section class="seccion-inicio seccion-materias" aria-labelledby="titulo-materias">
+              <div class="cabecera-seccion" data-animar>
+                <h2 class="titulo-seccion" id="titulo-materias">Tus materias</h2>
+                <a class="ver-todas" href="materias.html">Ver todas <span data-icono="flecha"></span></a>
+              </div>
+              <div class="rejilla-materias" id="rejilla-materias"></div>
+            </section>
+
+            <!-- Notas recientes -->
+            <section class="seccion-inicio seccion-notas" aria-labelledby="titulo-notas">
+              <div class="cabecera-seccion" data-animar>
+                <h2 class="titulo-seccion" id="titulo-notas">Notas recientes</h2>
+                <a class="ver-todas" href="notas.html">Ver todas <span data-icono="flecha"></span></a>
+              </div>
+              <div class="rejilla-notas-recientes" id="notas-recientes"></div>
+            </section>
+          </div>
+
+          <!-- ═══ Columna lateral: tu día ═══ -->
+          <aside class="tablero-lateral" aria-label="Tu día">
+            <section class="recordatorio" id="recordatorio" data-animar aria-live="polite"></section>
+
+            <section class="tarjeta tarjeta-lateral agenda" data-animar aria-labelledby="titulo-agenda">
+              <div class="cabecera-seccion">
+                <h2 id="titulo-agenda">Agenda</h2>
+                <a class="ver-todas" href="calendario.html">Calendario <span data-icono="flecha"></span></a>
+              </div>
+              <div class="semana" id="semana"></div>
+              <ul class="lista-agenda" id="lista-agenda"></ul>
+            </section>
+
+            <section class="tarjeta tarjeta-lateral enfoque" id="enfoque" data-animar aria-labelledby="titulo-enfoque"></section>
+
+            <section class="tarjeta tarjeta-lateral racha" id="racha" data-animar aria-label="Racha de estudio"></section>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <nav class="navegacion-inferior" id="navegacion-inferior" aria-label="Navegación principal"></nav>
+  <!-- Modal de bienvenida: solo la primera vez (cuando aún no hay nombre) -->
+  <div class="modal" id="modal-bienvenida" role="dialog" aria-modal="true" aria-labelledby="titulo-bienvenida">
+    <div class="modal-fondo"></div>
+    <form class="modal-panel" id="formulario-bienvenida" novalidate>
+      <div class="tirador"></div>
+      <div class="modal-cuerpo" style="padding-top:26px">
+        <span class="icono-color grande"><span data-icono="sol"></span></span>
+        <div>
+          <h2 id="titulo-bienvenida" style="font-size:20px">¡Bienvenido a NoteFlow!</h2>
+          <p class="texto-secundario" style="margin-top:4px">Tu espacio está listo y vacío. Cuéntanos cómo te llamas para saludarte.</p>
+        </div>
+        <div class="campo">
+          <label for="bienvenida-nombre">¿Cómo te llamas?</label>
+          <input class="entrada" id="bienvenida-nombre" name="nombre" type="text" maxlength="80" autocomplete="name" placeholder="Tu nombre">
+          <span class="mensaje-error"></span>
+        </div>
+        <div class="campo">
+          <label for="bienvenida-carrera">Carrera o curso <span class="texto-tenue">(opcional)</span></label>
+          <input class="entrada" id="bienvenida-carrera" name="carrera" type="text" maxlength="80" placeholder="Ej: Ingeniería de Sistemas">
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="boton boton-primario" type="submit" style="flex:1">Empezar</button>
+      </div>
+    </form>
+  </div>
+
+  <script type="module" src="../js/app.js"></script>
+  <script type="module" src="../js/inicio.js"></script>
+</body>
+</html>

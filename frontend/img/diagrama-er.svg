@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" font-family="Geist, system-ui, sans-serif" font-size="13">
+  <rect width="640" height="220" rx="16" fill="#fafbfc"/>
+  <!-- Líneas -->
+  <g stroke="#9aa8c7" stroke-width="1.4" fill="none">
+    <path d="M178 70H262M378 70H462"/>
+    <path d="M95 88 70 150M140 88 160 150M505 88 480 150M550 88 570 150"/>
+  </g>
+  <!-- Entidades -->
+  <g>
+    <rect x="58" y="50" width="120" height="40" rx="6" fill="#e8f1fd" stroke="#2f7de0" stroke-width="1.4"/>
+    <text x="118" y="75" text-anchor="middle" fill="#1d4f95" font-weight="600">Estudiante</text>
+    <rect x="462" y="50" width="120" height="40" rx="6" fill="#e8f1fd" stroke="#2f7de0" stroke-width="1.4"/>
+    <text x="522" y="75" text-anchor="middle" fill="#1d4f95" font-weight="600">Curso</text>
+  </g>
+  <!-- Relación -->
+  <path d="M320 38 380 70 320 102 260 70z" fill="#ffffff" stroke="#8a93a8" stroke-width="1.4"/>
+  <text x="320" y="75" text-anchor="middle" fill="#2a2c35">Inscripción</text>
+  <text x="222" y="62" text-anchor="middle" fill="#5b6070" font-size="12">N</text>
+  <text x="420" y="62" text-anchor="middle" fill="#5b6070" font-size="12">M</text>
+  <!-- Atributos -->
+  <g fill="#ffffff" stroke="#8a93a8" stroke-width="1.3">
+    <ellipse cx="62" cy="168" rx="32" ry="17"/>
+    <ellipse cx="166" cy="168" rx="42" ry="17"/>
+    <ellipse cx="474" cy="168" rx="32" ry="17"/>
+    <ellipse cx="578" cy="168" rx="42" ry="17"/>
+  </g>
+  <g fill="#2a2c35" text-anchor="middle">
+    <text x="62" y="172" text-decoration="underline">id</text>
+    <text x="166" y="172">nombre</text>
+    <text x="474" y="172" text-decoration="underline">id</text>
+    <text x="578" y="172">nombre</text>
+  </g>
+</svg>

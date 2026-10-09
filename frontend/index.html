@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="NoteFlow — Tus ideas, mejor organizadas. Notas por materia, tareas, calendario y un asistente de IA para estudiantes.">
+  <meta name="theme-color" content="#eef1f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NoteFlow">
+  <title>NoteFlow · Tus ideas, mejor organizadas</title>
+  <link rel="icon" img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="img/iconos/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="img/iconos/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/bienvenida.css">
+  <script src="js/aviso-archivo.js"></script>
+  <script src="vendor/gsap/gsap.min.js" defer></script>
+</head>
+
+<body class="pagina-bienvenida">
+
+  <!-- ═══ ENCABEZADO ═══ -->
+  <header class="encabezado-web" id="encabezado">
+    <div class="encabezado-contenido">
+      <a class="marca" href="#inicio" aria-label="NoteFlow, ir arriba">
+        <img class="marca-logo" src="img/logo.svg" alt="">
+        <span>NoteFlow</span>
+      </a>
+      <nav class="enlaces-web" aria-label="Secciones">
+        <a href="#informacion">Cómo funciona</a>
+        <button type="button" data-abrir-modal="modal-privacidad">Privacidad</button>
+      </nav>
+      <button class="boton boton-primario" type="button" data-iniciar>Iniciar</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="inicio" aria-labelledby="titulo-hero">
+      <div class="hero-texto">
+        <span class="pastilla-hero" data-entrada><span data-icono="ia"></span>Notas, tareas e IA en un solo lugar</span>
+        <h1 id="titulo-hero" data-entrada>Tus ideas,<br><span class="degradado">mejor organizadas.</span></h1>
+        <p class="hero-descripcion" data-entrada>
+          NoteFlow es tu espacio académico: organiza tus notas por materia, lleva tus tareas
+          y tu calendario, y estudia con ayuda de un asistente de IA.
+        </p>
+        <div class="hero-acciones" data-entrada>
+          <button class="boton boton-primario boton-grande" type="button" data-iniciar>
+            <span data-texto-iniciar>Iniciar</span><span data-icono="flecha"></span>
+          </button>
+          <a class="boton boton-secundario boton-grande" href="#informacion">Cómo funciona</a>
+        </div>
+        <p class="hero-nota" data-entrada><span data-icono="check"></span>Solo necesitas tu correo. Sin contraseñas.</p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="escena-3d escena-hero" id="escena-3d">
+          <img class="cubo-respaldo" src="img/cubo.svg" alt="">
+        </div>
+        <p class="frase-mano">Pequeños pasos,<br>grandes resultados.</p>
+      </div>
+    </section>
+
+    <!-- ═══ INFORMACIÓN ═══ -->
+    <section class="informacion" id="informacion" aria-labelledby="titulo-informacion">
+      <div class="contenido-web">
+        <header class="cabecera-informacion" data-revelar>
+          <span class="ceja-web">Cómo funciona</span>
+          <h2 id="titulo-informacion">Todo tu semestre, en un solo lugar</h2>
+          <p>Deja de buscar apuntes en cinco aplicaciones distintas. NoteFlow junta lo que necesitas para estudiar, simple y ordenado.</p>
+        </header>
+
+        <div class="rejilla-funciones">
+          <article class="funcion" data-revelar>
+            <span class="icono-color grande materia-verde"><span data-icono="materias"></span></span>
+            <h3>Notas por materia</h3>
+            <p>Cada nota vive en su materia, con etiquetas y favoritas para encontrarla en segundos.</p>
+          </article>
+          <article class="funcion" data-revelar>
+            <span class="icono-color grande materia-violeta"><span data-icono="tareas"></span></span>
+            <h3>Tareas y calendario</h3>
+            <p>Fechas de entrega, prioridades y un calendario con tus exámenes y sesiones de estudio.</p>
+          </article>
+          <article class="funcion" data-revelar>
+            <span class="icono-color grande materia-azul"><span data-icono="ia"></span></span>
+            <h3>Asistente de IA</h3>
+            <p>Resume tus notas, te hace preguntas para repasar y te ayuda a decidir qué estudiar hoy.</p>
+          </article>
+          <article class="funcion" data-revelar>
+            <span class="icono-color grande materia-ambar"><span data-icono="movil"></span></span>
+            <h3>En cualquier dispositivo</h3>
+            <p>Computador, tablet o celular. El diseño se adapta a cada pantalla.</p>
+          </article>
+        </div>
+
+        <div class="pasos-web" data-revelar>
+          <h3>Empieza en tres pasos</h3>
+          <ol>
+            <li><span class="numero-paso">01</span><strong>Escribe tu correo</strong><small>Te registras al instante, sin contraseña.</small></li>
+            <li><span class="numero-paso">02</span><strong>Crea tus materias</strong><small>Tu espacio empieza vacío y lo armas a tu medida.</small></li>
+            <li><span class="numero-paso">03</span><strong>Escribe y organiza</strong><small>Notas, tareas y eventos, todo conectado.</small></li>
+          </ol>
+          <button class="boton boton-primario boton-grande" type="button" data-iniciar>
+            <span data-texto-iniciar>Iniciar</span><span data-icono="flecha"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="pie-web">
+    <div class="contenido-web pie-contenido">
+      <div class="pie-marca">
+        <a class="marca" href="#inicio"><img class="marca-logo" src="img/logo.svg" alt=""><span>NoteFlow</span></a>
+        <p>Tus ideas, mejor organizadas.</p>
+      </div>
+      <nav class="pie-enlaces" aria-label="Enlaces del pie de página">
+        <a href="#informacion">Cómo funciona</a>
+        <button type="button" data-abrir-modal="modal-privacidad">Privacidad y cookies</button>
+        <button type="button" data-iniciar>Iniciar</button>
+      </nav>
+      <p class="pie-creditos">© <span id="anio">2026</span> NoteFlow · Hecho por Maturana Tech en Quibdó, Chocó</p>
+    </div>
+  </footer>
+
+  <!-- ═══ MODAL: REGISTRO / INICIO CON CORREO ═══ -->
+  <div class="modal" id="modal-acceso" role="dialog" aria-modal="true" aria-labelledby="titulo-acceso">
+    <div class="modal-fondo" data-cerrar-modal></div>
+    <div class="modal-panel panel-acceso">
+      <div class="tirador"></div>
+      <button class="boton-icono cerrar-acceso" type="button" data-cerrar-modal aria-label="Cerrar"><span data-icono="cerrar"></span></button>
+
+      <!-- Paso 1: correo -->
+      <form class="paso-acceso" id="paso-correo" novalidate>
+        <img class="logo-acceso" src="img/logo.svg" alt="">
+        <h2 id="titulo-acceso">Empieza en NoteFlow</h2>
+        <p class="texto-secundario">Escribe tu correo. Si es tu primera vez, creamos tu cuenta.</p>
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input class="entrada" id="correo" name="correo" type="email" inputmode="email" autocomplete="email" maxlength="254" placeholder="tucorreo@ejemplo.com" required>
+          <span class="mensaje-error"></span>
+        </div>
+        <label class="casilla-acepto">
+          <input type="checkbox" id="acepto" name="acepto">
+          <span>Acepto la <button type="button" class="enlace-texto" data-abrir-modal="modal-privacidad">política de privacidad</button></span>
+        </label>
+        <span class="mensaje-error" id="error-acepto"></span>
+        <button class="boton boton-primario boton-grande" type="submit" id="boton-continuar">Continuar</button>
+        <p class="aviso-modo" id="aviso-modo" hidden>
+          <span data-icono="reloj"></span>
+          Modo local: el servidor no tiene base de datos configurada, tu espacio se guarda solo en este navegador.
+        </p>
+      </form>
+
+      <!-- Paso 2: código (solo en modo nube) -->
+      <form class="paso-acceso" id="paso-codigo" novalidate hidden>
+        <span class="icono-color grande"><span data-icono="campana"></span></span>
+        <h2>Revisa tu correo</h2>
+        <p class="texto-secundario">Te enviamos un código a <strong id="correo-enviado"></strong>. Escríbelo aquí; vence en 10 minutos (revisa también la carpeta de spam).</p>
+        <div class="campo">
+          <label for="codigo">Código</label>
+          <input class="entrada entrada-codigo" id="codigo" name="codigo" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
+          <span class="mensaje-error"></span>
+        </div>
+        <button class="boton boton-primario boton-grande" type="submit" id="boton-verificar">Entrar</button>
+        <div class="acciones-codigo">
+          <button class="boton boton-fantasma" type="button" id="otro-correo">Usar otro correo</button>
+          <button class="boton boton-fantasma" type="button" id="reenviar" disabled>Reenviar código</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ MODAL: PRIVACIDAD ═══ -->
+  <div class="modal" id="modal-privacidad" role="dialog" aria-modal="true" aria-labelledby="titulo-privacidad">
+    <div class="modal-fondo" data-cerrar-modal></div>
+    <div class="modal-panel panel-texto">
+      <div class="tirador"></div>
+      <div class="modal-cabecera">
+        <h2 id="titulo-privacidad">Privacidad y cookies</h2>
+        <button class="boton-icono" type="button" data-cerrar-modal aria-label="Cerrar"><span data-icono="cerrar"></span></button>
+      </div>
+      <div class="modal-cuerpo texto-legal">
+        <h3>Qué datos guardamos</h3>
+        <p>Tu correo (para identificar tu cuenta), tu nombre y carrera si los escribes, y lo que creas en la app: materias, notas, imágenes, tareas, eventos y conversaciones con el asistente.</p>
+        <h3>Para qué</h3>
+        <p>Solo para que NoteFlow funcione: mostrarte tu información y guardarla. No vendemos ni compartimos tus datos con terceros para publicidad.</p>
+        <h3>Dónde se guardan</h3>
+        <p>En una base de datos PostgreSQL (Neon) a la que solo accede el servidor de NoteFlow, que revisa en cada petición que cada usuario vea únicamente lo suyo. En modo local, solo en tu navegador.</p>
+        <h3>Asistente de IA</h3>
+        <p>Cuando le escribas al asistente, tu mensaje y el contexto necesario (por ejemplo, el título de una nota) se enviarán desde nuestro servidor al proveedor de IA para generar la respuesta.</p>
+        <h3>Cookies</h3>
+        <p>No usamos cookies de publicidad ni de rastreo. Solo usamos una cookie necesaria para mantener tu sesión iniciada (dura 30 días o hasta que cierres sesión).</p>
+        <h3>Tus derechos</h3>
+        <p>Desde Configuración puedes descargar una copia de tus datos o borrarlos cuando quieras.</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/bienvenida.js"></script>
+</body>
+</html>

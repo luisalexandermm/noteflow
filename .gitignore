@@ -1,0 +1,14 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno con claves reales
+.env
+
+# Archivos generados (Vite / Capacitor, fases 9 y 10)
+dist/
+android/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,26 @@
+{
+  "name": "NoteFlow · Tus ideas, mejor organizadas",
+  "short_name": "NoteFlow",
+  "description": "Notas por materia, tareas, calendario y modo enfoque para estudiantes.",
+  "id": "/",
+  "start_url": "/paginas/inicio.html?origen=app",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#eef1f7",
+  "theme_color": "#eef1f7",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "/img/iconos/icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/iconos/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Nueva nota", "short_name": "Nota", "url": "/paginas/nota.html?nueva=1", "icons": [{ "src": "/img/iconos/icono-192.png", "sizes": "192x192" }] },
+    { "name": "Nueva tarea", "short_name": "Tarea", "url": "/paginas/tareas.html?nueva=1", "icons": [{ "src": "/img/iconos/icono-192.png", "sizes": "192x192" }] },
+    { "name": "Calendario", "short_name": "Calendario", "url": "/paginas/calendario.html", "icons": [{ "src": "/img/iconos/icono-192.png", "sizes": "192x192" }] }
+  ]
+}

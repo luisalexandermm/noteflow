@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="NoteFlow — Tus ideas, mejor organizadas. Notas, materias, tareas y calendario para estudiantes.">
+  <meta name="theme-color" content="#eef1f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NoteFlow">
+  <title>Calendario · NoteFlow</title>
+  <link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="../img/iconos/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../img/iconos/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <link rel="stylesheet" href="../css/componentes.css">
+  <link rel="stylesheet" href="../css/paginas.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <script src="../js/aviso-archivo.js"></script>
+  <script src="../vendor/gsap/gsap.min.js" defer></script>
+</head>
+
+<body data-pagina="calendario" class="pagina-calendario">
+  <div class="app">
+    <!-- Menú lateral, barra superior y navegación de celular: los dibuja js/navegacion.js -->
+    <aside class="barra-lateral" id="barra-lateral" aria-label="Menú principal"></aside>
+
+    <div class="principal">
+      <header class="barra-superior" id="barra-superior"></header>
+      <header class="cabecera-movil" id="cabecera-movil"></header>
+
+      <main class="contenido" id="contenido">
+        <header class="encabezado-pagina" data-animar>
+          <div>
+            <h1 class="titulo-pagina">Calendario y tareas</h1>
+            <p>Entregas, exámenes y sesiones de estudio.</p>
+          </div>
+          <div class="acciones">
+            <button class="boton boton-primario" type="button" data-abrir-modal="modal-evento" aria-label="Nuevo evento"><span data-icono="mas"></span><span class="texto-boton">Nuevo evento</span></button>
+          </div>
+        </header>
+
+        <div class="calendario">
+          <!-- Mes (escritorio) / semana (celular) -->
+          <section class="tarjeta calendario-mes" data-animar aria-label="Calendario">
+            <div class="calendario-cabecera">
+              <h2 id="titulo-mes"></h2>
+              <button class="boton boton-secundario" id="boton-hoy" type="button" style="height:32px">Hoy</button>
+              <button class="boton-icono" id="anterior" type="button" aria-label="Anterior"><span data-icono="izquierda"></span></button>
+              <button class="boton-icono" id="siguiente" type="button" aria-label="Siguiente"><span data-icono="derecha"></span></button>
+            </div>
+            <div class="dias-semana" aria-hidden="true">
+              <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+            </div>
+            <div class="rejilla-dias" id="rejilla-dias"></div>
+            <div class="tira-semana" id="tira-semana"></div>
+          </section>
+
+          <!-- Actividades del día seleccionado -->
+          <section class="tarjeta panel-dia" data-animar aria-labelledby="titulo-dia">
+            <h2 class="titulo-dia" id="titulo-dia"></h2>
+            <p class="subtitulo-dia" id="subtitulo-dia"></p>
+            <div class="pestanas" role="tablist">
+              <button class="pestana activa" type="button" role="tab" data-pestana="tareas" aria-selected="true">Tareas <span class="cuenta" id="cuenta-tareas"></span></button>
+              <button class="pestana" type="button" role="tab" data-pestana="eventos" aria-selected="false">Eventos <span class="cuenta" id="cuenta-eventos"></span></button>
+            </div>
+            <ul class="lista-tareas" id="actividades-dia"></ul>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <nav class="navegacion-inferior" id="navegacion-inferior" aria-label="Navegación principal"></nav>
+  <button class="boton-flotante" type="button" data-abrir-modal="modal-evento" aria-label="Nuevo evento"><span data-icono="mas"></span></button>
+
+  <!-- Modal: nuevo evento -->
+  <div class="modal" id="modal-evento" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-evento">
+    <div class="modal-fondo" data-cerrar-modal></div>
+    <form class="modal-panel" id="formulario-evento" novalidate>
+      <div class="tirador"></div>
+      <div class="modal-cabecera">
+        <h2 id="titulo-modal-evento">Nuevo evento</h2>
+        <button class="boton-icono" type="button" data-cerrar-modal aria-label="Cerrar"><span data-icono="cerrar"></span></button>
+      </div>
+      <div class="modal-cuerpo">
+        <div class="campo">
+          <label for="evento-titulo">Título</label>
+          <input class="entrada" id="evento-titulo" name="titulo" type="text" maxlength="120" placeholder="Ej: Parcial de Física" autocomplete="off">
+          <span class="mensaje-error"></span>
+        </div>
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="evento-tipo">Tipo</label>
+            <select class="selector" id="evento-tipo" name="tipo">
+              <option value="sesion_estudio">Sesión de estudio</option>
+              <option value="examen">Examen</option>
+              <option value="evento">Evento</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="evento-materia">Materia</label>
+            <select class="selector" id="evento-materia" name="materia"></select>
+          </div>
+        </div>
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="evento-fecha">Fecha</label>
+            <input class="entrada" id="evento-fecha" name="fecha" type="date">
+            <span class="mensaje-error"></span>
+          </div>
+          <div class="campo">
+            <label for="evento-hora">Hora</label>
+            <input class="entrada" id="evento-hora" name="hora" type="time" value="08:00">
+          </div>
+        </div>
+        <div class="campo">
+          <label for="evento-duracion">Duración</label>
+          <select class="selector" id="evento-duracion" name="duracion">
+            <option value="30">30 minutos</option>
+            <option value="45">45 minutos</option>
+            <option value="60" selected>1 hora</option>
+            <option value="90">1 hora 30 min</option>
+            <option value="120">2 horas</option>
+            <option value="180">3 horas</option>
+          </select>
+          <small class="texto-tenue pequeno">Las sesiones de estudio suman tus horas en “Mi progreso”.</small>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="boton boton-secundario" type="button" data-cerrar-modal>Cancelar</button>
+        <button class="boton boton-primario" type="submit">Crear evento</button>
+      </div>
+    </form>
+  </div>
+
+  <script type="module" src="../js/app.js"></script>
+  <script type="module" src="../js/calendario.js"></script>
+</body>
+</html>

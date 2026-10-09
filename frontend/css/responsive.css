@@ -1,0 +1,266 @@
+/* ═══════════════════════════════════════════════════════════
+   NoteFlow · responsive.css
+   Cada tamaño está diseñado a propósito (no es solo "encoger"):
+   · PC grande  (≥ 1600px): más aire, columna lateral más ancha
+   · Portátil   (1100–1439px): menú flotante + columna lateral angosta
+   · Tablet     (768–1099px): menú de solo íconos, una columna
+   · Celular    (< 768px): app tipo PWA, barra inferior flotante
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══ PC GRANDE ════════════════════════════════════════════ */
+@media (min-width: 1600px) {
+  .contenido { max-width: 1480px; padding-left: 40px; padding-right: 40px; }
+  .barra-superior { padding: 0 max(40px, calc((100% - 1480px) / 2 + 40px)); }
+  .tablero { grid-template-columns: minmax(0, 1fr) 380px; gap: 28px; }
+  .banner-inicio { grid-template-columns: minmax(0, 1fr) 320px; min-height: 260px; }
+  .escena-3d { height: 260px; }
+}
+
+/* ═══ PORTÁTIL ═════════════════════════════════════════════ */
+@media (max-width: 1439px) {
+  :root { --ancho-sidebar: 236px; }
+  .tablero { grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; }
+  .banner-inicio { grid-template-columns: minmax(0, 1fr) 200px; padding: 26px 28px; }
+  .escena-3d { margin-right: -28px; }
+  .rejilla-notas-recientes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rejilla-notas-recientes > :nth-child(3) { display: none; }
+  .anillo-enfoque { width: 184px; height: 184px; }
+  .anillo-enfoque .centro { inset: 40px; }
+  .digito { font-size: 19px; }
+}
+
+@media (max-width: 1279px) {
+  .mosaicos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rejilla-materias { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fecha-hoy { display: none; }
+}
+
+/* ═══ TABLET ═══════════════════════════════════════════════ */
+@media (max-width: 1099px) {
+  :root { --ancho-sidebar: 76px; --margen-marco: 12px; }
+
+  /* Menú lateral: solo íconos */
+  .barra-lateral { align-items: center; padding: 18px 10px 10px; overflow: visible; }
+  .marca-texto,
+  .enlace-menu .texto,
+  .enlace-menu .contador,
+  .menu-titulo,
+  .tarjeta-instalar,
+  .usuario-lateral .datos,
+  .usuario-lateral > .icono { display: none !important; }
+  .marca { padding: 0 0 14px; }
+  .enlace-menu { width: 48px; height: 48px; padding: 0; justify-content: center; }
+  .usuario-lateral { padding: 4px; background: none; box-shadow: none; }
+
+  /* Nombre de la sección al pasar el mouse */
+  .enlace-menu::after {
+    content: attr(data-nombre);
+    position: absolute;
+    left: calc(100% + 12px);
+    top: 50%;
+    transform: translate(-4px, -50%);
+    padding: 6px 12px;
+    border-radius: var(--radio-total);
+    background: var(--tinta);
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--rapido), transform var(--rapido) var(--curva);
+    z-index: 60;
+  }
+  .enlace-menu:hover::after { opacity: 1; transform: translate(0, -50%); }
+
+  .barra-superior { padding: 0 var(--e-6); }
+  .contenido { padding: var(--e-2) var(--e-6) var(--e-10); }
+
+  /* Inicio en una columna; la lateral pasa a 2 columnas */
+  .tablero { grid-template-columns: minmax(0, 1fr); }
+  .tablero-lateral { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .mosaicos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .rejilla-materias { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rejilla-notas-recientes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rejilla-notas-recientes > :nth-child(3) { display: flex; }
+
+  .calendario { grid-template-columns: minmax(0, 1fr); }
+  .graficos { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ═══ CELULAR (experiencia PWA) ════════════════════════════ */
+@media (max-width: 767px) {
+  body { font-size: 15px; background-attachment: scroll; }
+
+  .app { display: block; }
+  .barra-lateral, .barra-superior { display: none; }
+
+  .contenido {
+    padding: 4px 16px calc(var(--alto-nav-inferior) + env(safe-area-inset-bottom) + 34px);
+  }
+
+  /* ── Cabecera: avatar + saludo + botones redondos ── */
+  .cabecera-movil {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: calc(70px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 16px 0;
+    background: rgba(238, 241, 247, 0.78);
+    -webkit-backdrop-filter: saturate(160%) blur(18px);
+    backdrop-filter: saturate(160%) blur(18px); /* vidrio esmerilado, como iOS */
+  }
+  .perfil-movil { display: flex; align-items: center; gap: 10px; min-width: 0; margin-right: auto; }
+  .perfil-movil .avatar { width: 42px; height: 42px; }
+  .perfil-movil small { display: block; font-size: 12px; font-weight: 500; color: var(--texto-3); }
+  .perfil-movil strong { display: block; max-width: 46vw; font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ── Barra inferior flotante ── */
+  .navegacion-inferior { display: grid; }
+  /* El "+" central de la barra y el botón de la cabecera ya crean cosas */
+  .boton-flotante { display: none !important; }
+
+  /* ── Botones y campos cómodos para el dedo ── */
+  .boton { height: 46px; font-size: 14.5px; }
+  .entrada, .selector { height: 48px; font-size: 16px; } /* 16px evita el zoom automático del iPhone */
+  .area-texto { font-size: 16px; }
+  .chip { height: 36px; }
+  .fila-campos { grid-template-columns: 1fr; }
+
+  .encabezado-pagina { margin-bottom: 16px; }
+  .titulo-pagina { font-size: 26px; }
+  .encabezado-pagina .acciones .texto-boton { display: none; }
+  .encabezado-pagina .acciones .boton { width: 46px; padding: 0; }
+
+  /* ── Modal → hoja que sube desde abajo ── */
+  .modal { place-items: end stretch; padding: 0; }
+  .modal-panel { width: 100%; max-height: 92dvh; border-radius: 28px 28px 0 0; padding-bottom: env(safe-area-inset-bottom); transform: translateY(100%); }
+  .tirador { display: block; width: 40px; height: 5px; margin: 10px auto 0; border-radius: 5px; background: var(--linea-fuerte); }
+  .modal-cabecera { padding: 10px 14px 0 20px; }
+  .modal-cuerpo { padding: 16px 20px; }
+  .modal-pie { padding: 0 20px 20px; }
+  .modal-pie .boton { flex: 1; }
+  .modal-pie .izquierda { flex: 0; }
+  .modal-buscar { place-items: start stretch; padding: 0; }
+  .modal-buscar .modal-panel { border-radius: 0 0 28px 28px; transform: translateY(-20px); max-height: 80dvh; padding-top: env(safe-area-inset-top); }
+
+  .aviso { bottom: calc(var(--alto-nav-inferior) + env(safe-area-inset-bottom) + 24px); }
+
+  /* ── Inicio: una columna con orden pensado para el celular ── */
+  .tablero { display: flex; flex-direction: column; align-items: stretch; gap: 22px; }
+  .tablero-principal, .tablero-lateral { display: contents; }
+  .banner-inicio { display: none; }
+  .recordatorio { order: 1; }
+  .buscador-inicio {
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 54px;
+    padding: 0 7px 0 18px;
+    border-radius: var(--radio-total);
+    background: var(--superficie);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), var(--sombra-2);
+    color: var(--texto-3);
+    font-size: 15px;
+    text-align: left;
+  }
+  .buscador-inicio > span:nth-child(2) { flex: 1; }
+  .buscador-inicio .boton-filtro { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--acento-suave); color: var(--acento-texto); }
+  .seccion-resumen { order: 3; }
+  .primeros-pasos { order: 4; }
+  .agenda { order: 5; }
+  .seccion-materias { order: 6; }
+  .enfoque { order: 7; }
+  .racha { order: 8; }
+  .seccion-notas { order: 9; }
+  .aviso-instalar { order: 0; }
+  .puede-instalar .aviso-instalar:not([hidden]) {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--radio-xl);
+    background: var(--tinta);
+    color: #fff;
+  }
+  .aviso-instalar > div { flex: 1; }
+  .aviso-instalar strong { display: block; font-size: 14px; }
+  .aviso-instalar small { display: block; font-size: 12px; opacity: 0.7; }
+  .aviso-instalar .boton { height: 38px; background: #fff; color: var(--tinta); }
+  .aviso-instalar .boton-icono { color: rgba(255, 255, 255, 0.7); }
+
+  .seccion-inicio .cabecera-seccion { margin-bottom: 12px; }
+  .mosaicos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .mosaico { min-height: 124px; padding: 16px; }
+  .mosaico .numero { font-size: 30px; }
+  .mosaico .onda { width: 60px; top: 18px; right: 12px; }
+
+  /* Carruseles horizontales (materias y notas) */
+  .rejilla-materias, .rejilla-notas-recientes {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin: 0 -16px;
+    padding: 2px 16px 10px;
+    scrollbar-width: none;
+  }
+  .rejilla-materias::-webkit-scrollbar, .rejilla-notas-recientes::-webkit-scrollbar { display: none; }
+  .rejilla-materias > *, .rejilla-notas-recientes > * { flex: 0 0 74%; scroll-snap-align: start; }
+  .rejilla-materias > .vacio-ancho, .rejilla-notas-recientes > .vacio-ancho { flex-basis: 100%; }
+  .rejilla-notas-recientes > :nth-child(3) { display: flex; }
+
+  .tarjeta-lateral { padding: 18px; }
+  .lista-pasos { grid-template-columns: 1fr; }
+  .primeros-pasos { padding: 16px; }
+
+  /* ── Notas ── */
+  .barra-filtros { flex-wrap: wrap; }
+  .barra-filtros .buscador, .barra-filtros .pestanas { flex: 1 1 100% !important; }
+  .barra-filtros .selector { flex: 1; min-width: 0; }
+  .rejilla-notas { grid-template-columns: 1fr; gap: 12px; }
+
+  /* ── Editor ── */
+  .editor-nota { margin: 0 -16px; border-radius: 26px 26px 0 0; }
+  .editor-herramientas { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .editor-meta .entrada-etiquetas { width: 100%; }
+  .contenido-nota { padding: 18px 18px 24px; font-size: 16px; }
+  .zona-ia { position: sticky; bottom: calc(var(--alto-nav-inferior) + env(safe-area-inset-bottom) + 10px); }
+
+  /* ── Tareas ── */
+  .fila-tarea { padding: 12px 10px; }
+  .fila-tarea .boton-borrar { opacity: 1; }
+  .fila-tarea .estado { display: none; }
+
+  /* ── Calendario: tira de semana + lista ── */
+  .calendario { gap: 14px; }
+  .calendario-mes { padding: 14px 10px; }
+  .calendario-mes .dias-semana, .calendario-mes .rejilla-dias { display: none; }
+  .tira-semana { display: grid; }
+  .calendario-cabecera { padding: 0 4px; }
+
+  /* ── Estadísticas ── */
+  .tarjeta-grafico { padding: 16px; }
+
+  /* ── Asistente: pantalla completa ── */
+  .pagina-asistente .contenido { padding: 0 0 calc(var(--alto-nav-inferior) + env(safe-area-inset-bottom) + 20px); }
+  .chat {
+    height: calc(100dvh - 70px - var(--alto-nav-inferior) - env(safe-area-inset-bottom) - env(safe-area-inset-top) - 20px);
+    min-height: 0;
+    margin: 0 12px;
+  }
+  .mensaje { max-width: 94%; }
+  .chat-mensajes { padding: 16px; }
+
+  /* ── Configuración ── */
+  .ajustes .tarjeta { padding: 4px 16px; }
+  .perfil-edicion { flex-direction: column; align-items: stretch; }
+}
+
+/* App instalada (modo standalone): un poco más de aire arriba */
+@media (display-mode: standalone) and (max-width: 767px) {
+  .cabecera-movil { height: calc(74px + env(safe-area-inset-top)); }
+}

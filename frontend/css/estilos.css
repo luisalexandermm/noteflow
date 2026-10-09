@@ -1,0 +1,211 @@
+/* ═══════════════════════════════════════════════════════════
+   NoteFlow · estilos.css
+   Base del diseño:
+   1. Fuentes locales
+   2. Variables (colores, fuentes, espacios, sombras)
+   3. Reset y estilos generales
+   4. Estructura de la app (sidebar + área principal)
+   5. Tipografía y utilidades
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 1. FUENTES LOCALES (licencia OFL) ─────────────────────
+   Guardadas en /fuentes para que la app funcione sin internet. */
+@font-face { font-family: "Geist"; src: url("../fuentes/geist-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Geist"; src: url("../fuentes/geist-sans-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Geist"; src: url("../fuentes/geist-sans-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("../fuentes/geist-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("../fuentes/geist-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Caveat"; src: url("../fuentes/caveat-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+
+/* ── 2. VARIABLES ──────────────────────────────────────────
+   Cambia un color aquí y cambia en TODA la app.             */
+:root {
+  /* Superficies */
+  --fondo: #eef1f7;            /* blanco aperlado azulado (fondo general) */
+  --vidrio: rgba(255, 255, 255, 0.66);        /* menú lateral y barras flotantes */
+  --vidrio-borde: rgba(255, 255, 255, 0.85);
+  --superficie: #ffffff;       /* tarjetas, sidebar, paneles         */
+  --superficie-suave: #fafbfc; /* zonas dentro de una tarjeta        */
+  --hundido: #f1f2f5;          /* campos de texto, chips             */
+  --hover: #f3f4f8;            /* fondo al pasar el mouse            */
+  --activo-fondo: #eef0f8;     /* sección activa del menú            */
+
+  /* Texto (negro suave, nunca negro puro) */
+  --tinta: #15161c;
+  --texto-2: #5b6070;
+  --texto-3: #979cab;
+
+  /* Líneas */
+  --linea: #eceef2;
+  --linea-fuerte: #e1e4ea;
+
+  /* Acento azul-violeta */
+  --degradado-acento: linear-gradient(135deg, #7d8cff 0%, #5b5ff0 52%, #8a5cf6 100%);
+  --acento: #5b5ff0;
+  --acento-hover: #4a4ee0;
+  --acento-suave: #eef0ff;
+  --acento-texto: #4b4fd6;
+
+  /* Estados (solo como pequeños indicadores) */
+  --exito: #1f9d67;   --exito-suave: #e7f6ef;
+  --aviso: #e08a1e;   --aviso-suave: #fdf2e3;
+  --peligro: #dc4b45; --peligro-suave: #fdeceb;
+
+  /* Colores de materia: color fuerte + fondo suave */
+  --verde: #1f9d67;     --verde-suave: #e6f6ee;
+  --violeta: #a24fd0;   --violeta-suave: #f5ebfb;
+  --azul: #2f7de0;      --azul-suave: #e8f1fd;
+  --ambar: #d9650f;     --ambar-suave: #fdefe2;
+  --turquesa: #0f9bb0;  --turquesa-suave: #e3f5f8;
+  --rosa: #d63c79;      --rosa-suave: #fce9f1;
+
+  /* Tipografía */
+  --fuente-ui: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fuente-mono: "Geist Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --fuente-mano: "Caveat", "Segoe Print", cursive;
+
+  /* Espacios (múltiplos de 4) */
+  --e-1: 4px;  --e-2: 8px;  --e-3: 12px; --e-4: 16px;
+  --e-5: 20px; --e-6: 24px; --e-8: 32px; --e-10: 40px; --e-12: 48px;
+
+  /* Pasteles para los mosaicos del resumen */
+  --lavanda: #ece9fe;  --lavanda-tinta: #5a4fd8;
+  --durazno: #ffe9dd;  --durazno-tinta: #c95a22;
+  --cielo: #e2f0fd;    --cielo-tinta: #2b6fd0;
+  --menta: #e0f5ea;    --menta-tinta: #1a8a5a;
+
+  /* Bordes redondeados (formas suaves, tipo app) */
+  --radio-s: 10px;
+  --radio-m: 14px;
+  --radio-l: 20px;
+  --radio-xl: 26px;
+  --radio-xxl: 32px;
+  --radio-total: 999px;
+
+  /* Sombras: suaves */
+  --sombra-1: 0 1px 2px rgba(30, 40, 90, 0.04);
+  --sombra-2: 0 1px 2px rgba(30, 40, 90, 0.04), 0 12px 28px -16px rgba(30, 40, 90, 0.18);
+  --sombra-3: 0 2px 4px rgba(30, 40, 90, 0.04), 0 26px 48px -22px rgba(30, 40, 90, 0.28);
+  --sombra-acento: 0 14px 30px -10px rgba(91, 95, 240, 0.6);
+  --sombra-modal: 0 30px 80px -20px rgba(30, 40, 90, 0.4);
+
+  /* Movimiento */
+  --curva: cubic-bezier(0.22, 1, 0.36, 1);
+  --rapido: 150ms;
+  --normal: 260ms;
+
+  /* Medidas */
+  --ancho-sidebar: 256px;
+  --alto-barra-superior: 72px;
+  --alto-nav-inferior: 72px;   /* barra flotante del celular */
+  --margen-marco: 14px;        /* espacio alrededor del menú lateral flotante */
+}
+
+/* ── 3. RESET Y GENERAL ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--fuente-ui);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--tinta);
+  background-color: var(--fondo);
+  /* Dos manchas de color muy suaves: lavanda arriba y cielo abajo */
+  background-image:
+    radial-gradient(900px 600px at 100% 0%, rgba(139, 124, 255, 0.16), transparent 65%),
+    radial-gradient(800px 600px at 0% 100%, rgba(120, 190, 255, 0.16), transparent 65%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg, canvas { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+ul, ol { padding: 0; list-style: none; }
+
+::selection { background: var(--acento-suave); color: var(--acento-texto); }
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: var(--radio-s);
+}
+
+/* Íconos SVG (los dibuja js/iconos.js) */
+.icono {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── 4. ESTRUCTURA DE LA APP ───────────────────────────────
+   ┌─────────┐ ┌───────────────────────────────┐
+   │ menú    │ │ barra superior (vidrio)       │
+   │ lateral │ ├───────────────────────────────┤
+   │ flotante│ │ contenido                     │
+   └─────────┘ └───────────────────────────────┘             */
+.app {
+  display: grid;
+  grid-template-columns: calc(var(--ancho-sidebar) + var(--margen-marco)) minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.principal {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenido {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: var(--e-2) var(--e-8) var(--e-12);
+  flex: 1;
+}
+
+/* ── 5. TIPOGRAFÍA Y UTILIDADES ─────────────────────────── */
+h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+
+.titulo-grande {
+  font-size: clamp(30px, 3.4vw, 42px);
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+.titulo-pagina { font-size: 30px; letter-spacing: -0.035em; }
+.titulo-seccion { font-size: 17px; letter-spacing: -0.015em; }
+
+.texto-secundario { color: var(--texto-2); }
+.texto-tenue { color: var(--texto-3); }
+.pequeno { font-size: 12.5px; }
+.mono { font-family: var(--fuente-mono); }
+
+.solo-lectores {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Cuando una página no ha terminado de cargar sus datos */
+[hidden] { display: none !important; }
+
+/* Si el usuario pidió menos movimiento (sistema o Configuración) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}
+.sin-animaciones *, .sin-animaciones *::before, .sin-animaciones *::after {
+  animation-duration: 1ms !important;
+  transition-duration: 1ms !important;
+}

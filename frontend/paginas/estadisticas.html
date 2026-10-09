@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="NoteFlow — Tus ideas, mejor organizadas. Notas, materias, tareas y calendario para estudiantes.">
+  <meta name="theme-color" content="#eef1f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NoteFlow">
+  <title>Mi progreso · NoteFlow</title>
+  <link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="../img/iconos/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../img/iconos/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <link rel="stylesheet" href="../css/componentes.css">
+  <link rel="stylesheet" href="../css/paginas.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <script src="../js/aviso-archivo.js"></script>
+  <script src="../vendor/gsap/gsap.min.js" defer></script>
+</head>
+
+<body data-pagina="estadisticas" class="pagina-estadisticas">
+  <div class="app">
+    <!-- Menú lateral, barra superior y navegación de celular: los dibuja js/navegacion.js -->
+    <aside class="barra-lateral" id="barra-lateral" aria-label="Menú principal"></aside>
+
+    <div class="principal">
+      <header class="barra-superior" id="barra-superior"></header>
+      <header class="cabecera-movil" id="cabecera-movil"></header>
+
+      <main class="contenido" id="contenido">
+        <header class="encabezado-pagina" data-animar>
+          <div>
+            <h1 class="titulo-pagina">Mi progreso</h1>
+            <p>Cómo vas esta semana.</p>
+          </div>
+        </header>
+
+        <div class="rejilla-datos" id="datos-progreso" style="margin-top:0"></div>
+
+        <div class="graficos">
+          <section class="tarjeta tarjeta-grafico" data-animar aria-labelledby="titulo-horas">
+            <h2 id="titulo-horas">Horas de estudio</h2>
+            <p class="subtitulo" id="subtitulo-horas">Últimos 7 días</p>
+            <div class="grafico" id="grafico-horas"></div>
+            <details class="ver-tabla">
+              <summary>Ver como tabla</summary>
+              <table id="tabla-horas"></table>
+            </details>
+          </section>
+
+          <section class="tarjeta tarjeta-grafico" data-animar aria-labelledby="titulo-materias-progreso">
+            <h2 id="titulo-materias-progreso">Progreso por materia</h2>
+            <p class="subtitulo">Tareas completadas de cada materia</p>
+            <div class="lista-progreso" id="progreso-materias"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <nav class="navegacion-inferior" id="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+
+  <script type="module" src="../js/app.js"></script>
+  <script type="module" src="../js/estadisticas.js"></script>
+</body>
+</html>

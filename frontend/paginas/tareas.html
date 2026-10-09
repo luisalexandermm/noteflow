@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="NoteFlow — Tus ideas, mejor organizadas. Notas, materias, tareas y calendario para estudiantes.">
+  <meta name="theme-color" content="#eef1f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NoteFlow">
+  <title>Tareas · NoteFlow</title>
+  <link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="../img/iconos/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../img/iconos/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <link rel="stylesheet" href="../css/componentes.css">
+  <link rel="stylesheet" href="../css/paginas.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <script src="../js/aviso-archivo.js"></script>
+  <script src="../vendor/gsap/gsap.min.js" defer></script>
+</head>
+
+<body data-pagina="tareas" class="pagina-tareas">
+  <div class="app">
+    <!-- Menú lateral, barra superior y navegación de celular: los dibuja js/navegacion.js -->
+    <aside class="barra-lateral" id="barra-lateral" aria-label="Menú principal"></aside>
+
+    <div class="principal">
+      <header class="barra-superior" id="barra-superior"></header>
+      <header class="cabecera-movil" id="cabecera-movil"></header>
+
+      <main class="contenido" id="contenido">
+        <header class="encabezado-pagina" data-animar>
+          <div>
+            <h1 class="titulo-pagina">Mis tareas</h1>
+            <p id="resumen-tareas">Lo que tienes que entregar, ordenado por fecha.</p>
+          </div>
+          <div class="acciones">
+            <button class="boton boton-primario" type="button" data-abrir-modal="modal-tarea" aria-label="Nueva tarea"><span data-icono="mas"></span><span class="texto-boton">Nueva tarea</span></button>
+          </div>
+        </header>
+
+        <div class="barra-filtros" data-animar>
+          <div class="pestanas" id="pestanas-tareas" role="tablist" aria-label="Filtrar por estado" style="flex:1"></div>
+          <select class="selector" id="filtro-materia" aria-label="Filtrar por materia"></select>
+        </div>
+
+        <div id="contenedor-tareas"></div>
+      </main>
+    </div>
+  </div>
+
+  <nav class="navegacion-inferior" id="navegacion-inferior" aria-label="Navegación principal"></nav>
+  <!-- Modal: nueva tarea -->
+  <div class="modal" id="modal-tarea" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-tarea">
+    <div class="modal-fondo" data-cerrar-modal></div>
+    <form class="modal-panel" id="formulario-tarea" novalidate>
+      <div class="tirador"></div>
+      <div class="modal-cabecera">
+        <h2 id="titulo-modal-tarea">Nueva tarea</h2>
+        <button class="boton-icono" type="button" data-cerrar-modal aria-label="Cerrar"><span data-icono="cerrar"></span></button>
+      </div>
+      <div class="modal-cuerpo">
+        <div class="campo">
+          <label for="tarea-titulo">Título</label>
+          <input class="entrada" id="tarea-titulo" name="titulo" type="text" maxlength="120" placeholder="Ej: Entregar informe de BD" autocomplete="off">
+          <span class="mensaje-error"></span>
+        </div>
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="tarea-materia">Materia</label>
+            <select class="selector" id="tarea-materia" name="materia"></select>
+          </div>
+          <div class="campo">
+            <label for="tarea-fecha">Fecha de entrega</label>
+            <input class="entrada" id="tarea-fecha" name="fecha" type="date">
+            <span class="mensaje-error"></span>
+          </div>
+        </div>
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="tarea-prioridad">Prioridad</label>
+            <select class="selector" id="tarea-prioridad" name="prioridad">
+              <option value="baja">Baja</option>
+              <option value="media" selected>Media</option>
+              <option value="alta">Alta</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="tarea-estado">Estado</label>
+            <select class="selector" id="tarea-estado" name="estado">
+              <option value="pendiente" selected>Pendiente</option>
+              <option value="en_progreso">En progreso</option>
+              <option value="completada">Completada</option>
+            </select>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="tarea-descripcion">Descripción <span class="texto-tenue">(opcional)</span></label>
+          <textarea class="area-texto" id="tarea-descripcion" name="descripcion" maxlength="1000" placeholder="¿Qué hay que hacer?"></textarea>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="boton boton-secundario" type="button" data-cerrar-modal>Cancelar</button>
+        <button class="boton boton-primario" type="submit">Crear tarea</button>
+      </div>
+    </form>
+  </div>
+
+  <script type="module" src="../js/app.js"></script>
+  <script type="module" src="../js/tareas.js"></script>
+</body>
+</html>

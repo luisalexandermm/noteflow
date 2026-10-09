@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="NoteFlow — Tus ideas, mejor organizadas. Notas, materias, tareas y calendario para estudiantes.">
+  <meta name="theme-color" content="#eef1f7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NoteFlow">
+  <title>Materias · NoteFlow</title>
+  <link rel="icon" href="../img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="../img/iconos/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="../img/iconos/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="../css/estilos.css">
+  <link rel="stylesheet" href="../css/componentes.css">
+  <link rel="stylesheet" href="../css/paginas.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <script src="../js/aviso-archivo.js"></script>
+  <script src="../vendor/gsap/gsap.min.js" defer></script>
+</head>
+
+<body data-pagina="materias" class="pagina-materias">
+  <div class="app">
+    <!-- Menú lateral, barra superior y navegación de celular: los dibuja js/navegacion.js -->
+    <aside class="barra-lateral" id="barra-lateral" aria-label="Menú principal"></aside>
+
+    <div class="principal">
+      <header class="barra-superior" id="barra-superior"></header>
+      <header class="cabecera-movil" id="cabecera-movil"></header>
+
+      <main class="contenido" id="contenido">
+        <header class="encabezado-pagina" data-animar>
+          <div>
+            <h1 class="titulo-pagina">Materias</h1>
+            <p>Cada materia con sus notas, tareas y progreso.</p>
+          </div>
+          <div class="acciones">
+            <button class="boton boton-primario" type="button" data-abrir-modal="modal-materia" aria-label="Nueva materia"><span data-icono="mas"></span><span class="texto-boton">Nueva materia</span></button>
+          </div>
+        </header>
+
+        <div class="rejilla-materias-grande" id="contenedor-materias"></div>
+      </main>
+    </div>
+  </div>
+
+  <nav class="navegacion-inferior" id="navegacion-inferior" aria-label="Navegación principal"></nav>
+  <!-- Modal: nueva materia -->
+  <div class="modal" id="modal-materia" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-materia">
+    <div class="modal-fondo" data-cerrar-modal></div>
+    <form class="modal-panel" id="formulario-materia" novalidate>
+      <div class="tirador"></div>
+      <div class="modal-cabecera">
+        <h2 id="titulo-modal-materia">Nueva materia</h2>
+        <button class="boton-icono" type="button" data-cerrar-modal aria-label="Cerrar"><span data-icono="cerrar"></span></button>
+      </div>
+      <div class="modal-cuerpo">
+        <div class="campo">
+          <label for="materia-nombre">Nombre</label>
+          <input class="entrada" id="materia-nombre" name="nombre" type="text" maxlength="80" placeholder="Ej: Física" autocomplete="off">
+          <span class="mensaje-error"></span>
+        </div>
+        <div class="campo">
+          <span class="etiqueta-campo">Color</span>
+          <div class="selector-color">
+      <input type="radio" name="color" id="color-verde" value="verde"><label for="color-verde" class="materia-verde" title="Verde"><span class="solo-lectores">verde</span></label>
+      <input type="radio" name="color" id="color-violeta" value="violeta"><label for="color-violeta" class="materia-violeta" title="Violeta"><span class="solo-lectores">violeta</span></label>
+      <input type="radio" name="color" id="color-azul" value="azul" checked><label for="color-azul" class="materia-azul" title="Azul"><span class="solo-lectores">azul</span></label>
+      <input type="radio" name="color" id="color-ambar" value="ambar"><label for="color-ambar" class="materia-ambar" title="Ambar"><span class="solo-lectores">ambar</span></label>
+      <input type="radio" name="color" id="color-turquesa" value="turquesa"><label for="color-turquesa" class="materia-turquesa" title="Turquesa"><span class="solo-lectores">turquesa</span></label>
+      <input type="radio" name="color" id="color-rosa" value="rosa"><label for="color-rosa" class="materia-rosa" title="Rosa"><span class="solo-lectores">rosa</span></label>
+          </div>
+        </div>
+        <div class="campo">
+          <span class="etiqueta-campo">Ícono</span>
+          <div class="selector-icono">
+      <input type="radio" name="icono" id="icono-algoritmo" value="algoritmo"><label for="icono-algoritmo" title="Algoritmos"><span data-icono="algoritmo"></span><span class="solo-lectores">Algoritmos</span></label>
+      <input type="radio" name="icono" id="icono-capas" value="capas"><label for="icono-capas" title="Estructuras"><span data-icono="capas"></span><span class="solo-lectores">Estructuras</span></label>
+      <input type="radio" name="icono" id="icono-base_datos" value="base_datos"><label for="icono-base_datos" title="Base de datos"><span data-icono="base_datos"></span><span class="solo-lectores">Base de datos</span></label>
+      <input type="radio" name="icono" id="icono-sigma" value="sigma"><label for="icono-sigma" title="Matemáticas"><span data-icono="sigma"></span><span class="solo-lectores">Matemáticas</span></label>
+      <input type="radio" name="icono" id="icono-atomo" value="atomo"><label for="icono-atomo" title="Física"><span data-icono="atomo"></span><span class="solo-lectores">Física</span></label>
+      <input type="radio" name="icono" id="icono-codigo" value="codigo"><label for="icono-codigo" title="Programación"><span data-icono="codigo"></span><span class="solo-lectores">Programación</span></label>
+      <input type="radio" name="icono" id="icono-libro" value="libro" checked><label for="icono-libro" title="Lectura"><span data-icono="libro"></span><span class="solo-lectores">Lectura</span></label>
+      <input type="radio" name="icono" id="icono-idioma" value="idioma"><label for="icono-idioma" title="Idiomas"><span data-icono="idioma"></span><span class="solo-lectores">Idiomas</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-pie">
+        <button class="boton boton-secundario" type="button" data-cerrar-modal>Cancelar</button>
+        <button class="boton boton-primario" type="submit">Crear materia</button>
+      </div>
+    </form>
+  </div>
+
+  <script type="module" src="../js/app.js"></script>
+  <script type="module" src="../js/materias.js"></script>
+</body>
+</html>

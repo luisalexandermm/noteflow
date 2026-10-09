@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Cubo de cristal: se ve mientras carga la escena 3D o si el 3D está desactivado -->
+  <defs>
+    <linearGradient id="arriba" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#e6e6ff"/><stop offset="1" stop-color="#cfd6ff"/></linearGradient>
+    <linearGradient id="izq" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9b8ff" stop-opacity=".95"/><stop offset="1" stop-color="#7c78f0" stop-opacity=".9"/></linearGradient>
+    <linearGradient id="der" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2f0ff"/><stop offset=".5" stop-color="#c7c3ff"/><stop offset="1" stop-color="#9d8ff5"/></linearGradient>
+    <radialGradient id="sombra" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#5b5ff0" stop-opacity=".25"/><stop offset="1" stop-color="#5b5ff0" stop-opacity="0"/></radialGradient>
+  </defs>
+  <ellipse cx="100" cy="176" rx="62" ry="12" fill="url(#sombra)"/>
+  <g stroke="#ffffff" stroke-width="2" stroke-linejoin="round">
+    <path d="M100 28 160 62 100 96 40 62z" fill="url(#arriba)"/>
+    <path d="M40 62 100 96v70L40 132z" fill="url(#izq)"/>
+    <path d="M160 62 100 96v70l60-34z" fill="url(#der)"/>
+  </g>
+  <path d="M52 70 88 90v44" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+  <g stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round" opacity=".9">
+    <path d="M166 22 180 30 166 38 152 30z" fill="#eef0ff"/>
+    <path d="M152 30 166 38v16l-14-8z" fill="#b3b1ff"/>
+    <path d="M180 30 166 38v16l14-8z" fill="#d9dcff"/>
+  </g>
+</svg>

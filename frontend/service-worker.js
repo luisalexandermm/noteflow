@@ -13,7 +13,7 @@
 // los celulares descarguen la copia nueva.
 // ═══════════════════════════════════════════════════════════
 
-const VERSION = "noteflow-v1";
+const VERSION = "noteflow-v2";
 
 // Lo mínimo para que la app abra sin internet
 const ARCHIVOS_BASE = [

@@ -14,10 +14,13 @@ import "./pwa.js";
 
 const RUTA_APP = "paginas/inicio.html";
 const ESPERA_REENVIO = 60; // segundos antes de poder pedir otro código
+const VIGENCIA_CODIGO = 10 * 60 * 1000;
+const CLAVE_ACCESO_PENDIENTE = "noteflow-acceso-pendiente";
 
 const pasoCorreo = document.getElementById("paso-correo");
 const pasoCodigo = document.getElementById("paso-codigo");
 let correoActual = "";
+let ultimoEnvio = 0;
 
 function puedeAnimar() {
   return Boolean(window.gsap) && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -27,13 +30,13 @@ function puedeAnimar() {
 let antesDelModal = null;
 
 // La política de privacidad puede abrirse ENCIMA del modal de acceso
-function abrirModal(id) {
+function abrirModal(id, { enfocar = true } = {}) {
   const modal = document.getElementById(id);
   antesDelModal = document.activeElement;
   modal.classList.add("abierto");
   document.body.style.overflow = "hidden";
   const campo = modal.querySelector("form:not([hidden]) input:not([type=checkbox])");
-  if (campo) setTimeout(() => campo.focus(), 80);
+  if (campo && enfocar) setTimeout(() => campo.focus(), 80);
 }
 
 function cerrarModal(modal) {
@@ -74,19 +77,65 @@ function prepararBotonesIniciar() {
   document.addEventListener("click", function (evento) {
     if (!evento.target.closest("[data-iniciar]")) return;
     if (usuario) return (window.location.href = RUTA_APP);
-    mostrarPaso("correo");
+    mostrarPaso(correoActual ? "codigo" : "correo");
     abrirModal("modal-acceso");
   });
 
   document.getElementById("aviso-modo").hidden = modo !== "local";
 }
 
-function mostrarPaso(paso) {
+function mostrarPaso(paso, { enfocar = true, animar = true } = {}) {
   pasoCorreo.hidden = paso !== "correo";
   pasoCodigo.hidden = paso !== "codigo";
   const visible = paso === "correo" ? pasoCorreo : pasoCodigo;
-  if (puedeAnimar()) window.gsap.from(visible, { opacity: 0, x: paso === "codigo" ? 16 : -16, duration: 0.35, ease: "power2.out" });
-  setTimeout(() => visible.querySelector("input:not([type=checkbox])").focus(), 60);
+  if (animar && puedeAnimar()) window.gsap.from(visible, { opacity: 0, x: paso === "codigo" ? 16 : -16, duration: 0.35, ease: "power2.out" });
+  if (enfocar) setTimeout(() => visible.querySelector("input:not([type=checkbox])").focus(), 60);
+}
+
+function guardarAccesoPendiente() {
+  try {
+    localStorage.setItem(CLAVE_ACCESO_PENDIENTE, JSON.stringify({
+      correo: correoActual,
+      enviadoEn: ultimoEnvio,
+      venceEn: ultimoEnvio + VIGENCIA_CODIGO
+    }));
+  } catch (error) {
+    console.warn("NoteFlow: no se pudo conservar el inicio de sesión", error);
+  }
+}
+
+function borrarAccesoPendiente() {
+  try {
+    localStorage.removeItem(CLAVE_ACCESO_PENDIENTE);
+  } catch (error) {
+    console.warn("NoteFlow: no se pudo limpiar el inicio de sesión pendiente", error);
+  }
+}
+
+function restaurarAccesoPendiente() {
+  if (modo !== "nube") return;
+  if (usuario) {
+    borrarAccesoPendiente();
+    return;
+  }
+
+  try {
+    const guardado = JSON.parse(localStorage.getItem(CLAVE_ACCESO_PENDIENTE) || "null");
+    if (!guardado || !correoValido(guardado.correo) || !Number.isFinite(guardado.venceEn) || guardado.venceEn <= Date.now()) {
+      borrarAccesoPendiente();
+      return;
+    }
+
+    correoActual = guardado.correo;
+    ultimoEnvio = Number.isFinite(guardado.enviadoEn) ? guardado.enviadoEn : Date.now();
+    document.getElementById("correo-enviado").textContent = correoActual;
+    mostrarPaso("codigo", { enfocar: false, animar: false });
+    abrirModal("modal-acceso", { enfocar: false });
+    iniciarCuentaRegresiva(ultimoEnvio);
+  } catch (error) {
+    console.warn("NoteFlow: no se pudo restaurar el inicio de sesión pendiente", error);
+    borrarAccesoPendiente();
+  }
 }
 
 // ── Paso 1: correo ──────────────────────────────────────────
@@ -109,14 +158,19 @@ pasoCorreo.addEventListener("submit", async function (evento) {
   // Modo nube: el servidor envía el código al correo
   const boton = document.getElementById("boton-continuar");
   ocupado(boton, true, "Enviando código…");
+  correoActual = correo;
+  ultimoEnvio = Date.now();
+  guardarAccesoPendiente();
   try {
     await enviarCodigo(correo);
-    correoActual = correo;
     document.getElementById("correo-enviado").textContent = correo;
     pasoCodigo.codigo.value = "";
     mostrarPaso("codigo");
-    iniciarCuentaRegresiva();
+    iniciarCuentaRegresiva(ultimoEnvio);
   } catch (error) {
+    borrarAccesoPendiente();
+    correoActual = "";
+    ultimoEnvio = 0;
     mostrarError(pasoCorreo.correo, error.message);
   } finally {
     ocupado(boton, false, "Continuar");
@@ -141,6 +195,7 @@ pasoCodigo.addEventListener("submit", async function (evento) {
   ocupado(boton, true, "Verificando…");
   try {
     await verificarCodigo(correoActual, codigo);
+    borrarAccesoPendiente();
     window.location.href = RUTA_APP;
   } catch (error) {
     mostrarError(pasoCodigo.codigo, error.message);
@@ -148,30 +203,40 @@ pasoCodigo.addEventListener("submit", async function (evento) {
   }
 });
 
-document.getElementById("otro-correo").addEventListener("click", () => mostrarPaso("correo"));
+document.getElementById("otro-correo").addEventListener("click", () => {
+  borrarAccesoPendiente();
+  correoActual = "";
+  ultimoEnvio = 0;
+  pasoCorreo.reset();
+  mostrarPaso("correo");
+});
 
 // Reenviar código (con espera para no saturar el correo)
 let temporizador = null;
-function iniciarCuentaRegresiva() {
+function iniciarCuentaRegresiva(enviadoEn = Date.now()) {
   const boton = document.getElementById("reenviar");
-  let segundos = ESPERA_REENVIO;
-  boton.disabled = true;
   clearInterval(temporizador);
   temporizador = setInterval(function () {
-    segundos--;
+    const segundos = Math.ceil((enviadoEn + ESPERA_REENVIO * 1000 - Date.now()) / 1000);
     boton.textContent = segundos > 0 ? `Reenviar en ${segundos} s` : "Reenviar código";
+    boton.disabled = segundos > 0;
     if (segundos <= 0) {
       clearInterval(temporizador);
-      boton.disabled = false;
     }
   }, 1000);
+  const segundos = Math.ceil((enviadoEn + ESPERA_REENVIO * 1000 - Date.now()) / 1000);
+  boton.textContent = segundos > 0 ? `Reenviar en ${segundos} s` : "Reenviar código";
+  boton.disabled = segundos > 0;
+  if (segundos <= 0) clearInterval(temporizador);
 }
 
 document.getElementById("reenviar").addEventListener("click", async function () {
+  ultimoEnvio = Date.now();
+  guardarAccesoPendiente();
+  iniciarCuentaRegresiva(ultimoEnvio);
   try {
     await enviarCodigo(correoActual);
     mostrarError(pasoCodigo.codigo, "");
-    iniciarCuentaRegresiva();
   } catch (error) {
     mostrarError(pasoCodigo.codigo, error.message);
   }
@@ -208,5 +273,6 @@ function cargarEscena3D() {
 document.getElementById("anio").textContent = new Date().getFullYear();
 pintarIconos();
 prepararBotonesIniciar();
+restaurarAccesoPendiente();
 animarPagina();
 cargarEscena3D();

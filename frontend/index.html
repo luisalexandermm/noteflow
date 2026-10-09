@@ -161,7 +161,7 @@
       <form class="paso-acceso" id="paso-codigo" novalidate hidden>
         <span class="icono-color grande"><span data-icono="campana"></span></span>
         <h2>Revisa tu correo</h2>
-        <p class="texto-secundario">Te enviamos un código a <strong id="correo-enviado"></strong>. Escríbelo aquí; vence en 10 minutos (revisa también la carpeta de spam).</p>
+        <p class="texto-secundario">Te enviamos un código a <strong id="correo-enviado"></strong>. Cambia a Gmail para consultarlo y vuelve a NoteFlow; este paso se conservará. El código vence en 10 minutos (revisa también la carpeta de spam).</p>
         <div class="campo">
           <label for="codigo">Código</label>
           <input class="entrada entrada-codigo" id="codigo" name="codigo" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456">
@@ -191,7 +191,7 @@
         <h3>Para qué</h3>
         <p>Solo para que NoteFlow funcione: mostrarte tu información y guardarla. No vendemos ni compartimos tus datos con terceros para publicidad.</p>
         <h3>Dónde se guardan</h3>
-        <p>En una base de datos PostgreSQL (Neon) a la que solo accede el servidor de NoteFlow, que revisa en cada petición que cada usuario vea únicamente lo suyo. En modo local, solo en tu navegador.</p>
+        <p>En una base de datos PostgreSQL (Neon) a la que solo accede el servidor de NoteFlow, que revisa en cada petición que cada usuario vea únicamente lo suyo. Mientras se verifica un código, el correo se conserva temporalmente en el dispositivo (máximo 10 minutos) para recuperar este paso si la app se recarga; el código no se guarda. En modo local, los datos quedan solo en tu navegador.</p>
         <h3>Asistente de IA</h3>
         <p>Cuando le escribas al asistente, tu mensaje y el contexto necesario (por ejemplo, el título de una nota) se enviarán desde nuestro servidor al proveedor de IA para generar la respuesta.</p>
         <h3>Cookies</h3>

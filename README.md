@@ -137,7 +137,7 @@ Archivos que la hacen funcionar:
 - `frontend/img/iconos/`: íconos 192, 512, maskable y de iPhone.
 
 > **Importante:** la instalación solo funciona en `https://` (cuando la publiques) o en `http://localhost`.
-> Cuando cambies archivos del frontend, sube la versión en `service-worker.js` (`noteflow-v1` → `noteflow-v2`) para que los celulares descarguen lo nuevo.
+> Cuando cambies archivos del frontend, incrementa la versión en `service-worker.js` (por ejemplo, `noteflow-v2` → `noteflow-v3`) para que los celulares descarguen lo nuevo.
 
 ---
 
